@@ -1,11 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import CurrentDate from '../shared/CurrentDate';
 import CategoriesNav from './CategoriesNav';
+import Marque from './Marque';
 
 const Navbar = () => {
-     const date = new Date().toLocaleDateString('bn-BD', {
-          dateStyle: 'full',
-     });
      return (
           <header className=" lg:px-0 lg:py-2.5 p-5">
                <div className="container-width flex justify-between gap-5">
@@ -21,7 +20,9 @@ const Navbar = () => {
                          </Link>
                          <div className="space-y-1">
                               <h3 className="font-bold text-[20px] text-base-content">বাজার দর</h3>
-                              <p className="text-[16px] text-base-content">{date}</p>
+                              <p>
+                                   <CurrentDate className="text-[16px] text-base-content" />
+                              </p>
                          </div>
                     </div>
                     <div className="flex gap-3 items-center">
@@ -40,6 +41,7 @@ const Navbar = () => {
                <div className="border-y border-base-300 py-3 mt-2.5">
                     <CategoriesNav />
                </div>
+               <Marque />
           </header>
      );
 };
