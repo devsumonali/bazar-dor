@@ -10,3 +10,13 @@ export const getProducts = async (): Promise<Product[]> => {
 
      return res.json();
 };
+
+export const getSingleProduct = async (id: string): Promise<Product> => {
+     const res = await fetch(`${BASE_URL}/products/${id}`);
+
+     if (!res.ok) {
+          throw new Error('fail to fetch product');
+     }
+
+     return res.json();
+};

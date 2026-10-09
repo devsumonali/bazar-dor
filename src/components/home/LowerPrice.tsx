@@ -1,22 +1,22 @@
 import { getProducts } from '@/libs/products';
-import { TiArrowSortedUp } from 'react-icons/ti';
+import { TiArrowSortedDown } from 'react-icons/ti';
 import ProductCards from '../products/ProductCards';
 
-const UpPrice = async () => {
+const LowerPrice = async () => {
      const products = await getProducts();
-     const upper = products
-          .filter((product) => product.change.dir === 'up')
-          .sort((a, b) => b.change.pct - a.change.pct)
+     const fallers = products
+          .filter((product) => product.change.dir === 'down')
+          .sort((a, b) => a.change.pct - b.change.pct)
           .slice(0, 6);
      return (
           <section className="mt-10 px-4 lg:px-0">
                <div className="container-width">
                     <h2 className="flex gap-2 items-center text-base-content font-bold text-[20px]">
-                         <TiArrowSortedUp className="text-error" />
-                         আজ দাম বেড়েছে
+                         <TiArrowSortedDown className="text-primary" />
+                         আজ দাম কমেছে
                     </h2>
                     <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                         {upper.map((product) => (
+                         {fallers.map((product) => (
                               <ProductCards key={product.id} product={product} />
                          ))}
                     </div>
@@ -25,4 +25,4 @@ const UpPrice = async () => {
      );
 };
 
-export default UpPrice;
+export default LowerPrice;

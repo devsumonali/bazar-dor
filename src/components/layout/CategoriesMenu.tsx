@@ -12,21 +12,23 @@ const CategoriesMenu = ({ categories }: CategoriesMenuProps) => {
      const pathname = usePathname();
 
      return (
-          <div className="container-width flex gap-5">
+          <div className="container-width flex items-center gap-2 overflow-x-auto py-2">
                {categories.map((category) => {
                     const href = `/category/${category.slug}`;
-
                     const isActive = pathname === href;
 
                     return (
                          <Link
                               key={category.id}
                               href={href}
-                              className={
-                                   isActive ? 'font-semibold text-primary' : 'text-base-content'
-                              }
+                              className={`flex shrink-0 items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                                   isActive
+                                        ? 'bg-primary text-base-100'
+                                        : 'text-base-content hover:bg-primary/10 hover:text-primary'
+                              }`}
                          >
-                              {category.icon} {category.nameBn}
+                              <span>{category.icon}</span>
+                              <span>{category.nameBn}</span>
                          </Link>
                     );
                })}

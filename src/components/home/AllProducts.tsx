@@ -1,22 +1,19 @@
 import { getProducts } from '@/libs/products';
-import { TiArrowSortedUp } from 'react-icons/ti';
 import ProductCards from '../products/ProductCards';
 
-const UpPrice = async () => {
+const AllProducts = async () => {
      const products = await getProducts();
-     const upper = products
-          .filter((product) => product.change.dir === 'up')
-          .sort((a, b) => b.change.pct - a.change.pct)
-          .slice(0, 6);
      return (
-          <section className="mt-10 px-4 lg:px-0">
+          <section id="allProducts" className="my-12.5 px-4 lg:px-0">
                <div className="container-width">
                     <h2 className="flex gap-2 items-center text-base-content font-bold text-[20px]">
-                         <TiArrowSortedUp className="text-error" />
-                         আজ দাম বেড়েছে
+                         সব পণ্য
                     </h2>
+                    <p className="mt-2.5 text-sm text-base-content font-normal">
+                         মোট {products.length.toLocaleString('bn-BD')} টি পণ্য দেখানো হচ্ছে
+                    </p>
                     <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                         {upper.map((product) => (
+                         {products.map((product) => (
                               <ProductCards key={product.id} product={product} />
                          ))}
                     </div>
@@ -25,4 +22,4 @@ const UpPrice = async () => {
      );
 };
 
-export default UpPrice;
+export default AllProducts;

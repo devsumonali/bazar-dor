@@ -1,7 +1,7 @@
 export const getUnitBn = (unit: string) => {
      const units: Record<string, string> = {
           kg: 'কেজি',
-          liter: 'লিটার',
+          litre: 'লিটার',
           dozen: 'ডজন',
           piece: 'পিস',
      };

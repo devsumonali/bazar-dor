@@ -18,7 +18,7 @@ const Hero = () => {
                               বিস্তারিত, গড়, সর্বনিম্ন-সর্বাধিক এবং দামের পরিবর্তন এক জায়গায়।
                          </p>
 
-                         <Link href="/" className="self-center lg:self-start">
+                         <Link href="/#allProducts" className="self-center lg:self-start">
                               <button className="cursor-pointer rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-base-100 sm:text-base">
                                    সব পণ্য দেখুন
                               </button>
