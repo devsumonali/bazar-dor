@@ -6,7 +6,7 @@ import Marque from './Marque';
 
 const Navbar = () => {
      return (
-          <header className=" lg:px-0 lg:py-2.5 p-5">
+          <header className=" lg:px-0 lg:py-2.5 p-5 bg-white">
                <div className="container-width flex justify-between gap-5">
                     <div className="flex gap-3">
                          <Link href={'/'}>

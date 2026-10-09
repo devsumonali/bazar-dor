@@ -1,7 +1,11 @@
+import Hero from '@/components/home/Hero';
+import UpPrice from '@/components/home/UpPrice';
+
 export default function Home() {
      return (
-          <div>
-               <h1>home page</h1>
-          </div>
+          <main>
+               <Hero />
+               <UpPrice />
+          </main>
      );
 }

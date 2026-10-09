@@ -1,6 +1,7 @@
 import { getProducts } from '@/libs/products';
 import { getUnitBn } from '@/utils/getUnitBn';
-import { FaArrowDown, FaArrowUp, FaMinus } from 'react-icons/fa';
+import { LuMinus } from 'react-icons/lu';
+import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti';
 import MarqueeText from 'react-marquee-text';
 
 const Marque = async () => {
@@ -36,11 +37,11 @@ const Marque = async () => {
                                         }
                                    >
                                         {isUp ? (
-                                             <FaArrowUp />
+                                             <TiArrowSortedUp />
                                         ) : isDown ? (
-                                             <FaArrowDown />
+                                             <TiArrowSortedDown />
                                         ) : (
-                                             <FaMinus />
+                                             <LuMinus />
                                         )}
                                         {Math.abs(product.change.pct).toLocaleString('bn-BD')}%
                                    </span>
