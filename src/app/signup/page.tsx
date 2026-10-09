@@ -1,8 +1,188 @@
+'use client';
+import { authClient } from '@/libs/auth-client';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import { FaGithub } from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
+
 const SignUpPage = () => {
+     const onSubmitHandle = async (event: React.SubmitEvent<HTMLElement>) => {
+          event.preventDefault();
+
+          const formData = new FormData(event.target);
+          const user = Object.fromEntries(formData) as {
+               name: string;
+               email: string;
+               password: string;
+          };
+
+          const { data, error } = await authClient.signUp.email({ ...user, callbackURL: '/' });
+
+          if (data) {
+               console.log(data);
+               redirect('/');
+          }
+          if (error) {
+               console.log(error);
+          }
+     };
      return (
-          <div>
-               <h1>sign up</h1>
-          </div>
+          <main className="min-h-screen bg-base-200 px-4 py-10 sm:py-14">
+               <div className="mx-auto w-full max-w-md">
+                    {/* Header */}
+                    <div className="mb-6 text-center">
+                         <h1 className="text-2xl font-bold text-base-content">
+                              অ্যাকাউন্ট তৈরি করুন
+                         </h1>
+
+                         <p className="mt-2 text-sm text-base-content/60">
+                              বিনা খরচে সহজে অ্যাপ করে সব বিস্তারিত দাম দেখুন।
+                         </p>
+                    </div>
+
+                    {/* Register Form */}
+                    <div className="rounded-2xl border border-base-300 bg-base-100 p-5 shadow-sm sm:p-7">
+                         <form onSubmit={onSubmitHandle} className="space-y-4">
+                              {/* Name */}
+                              <div>
+                                   <label
+                                        htmlFor="name"
+                                        className="mb-1.5 block text-sm font-medium"
+                                   >
+                                        নাম
+                                   </label>
+
+                                   <input
+                                        id="name"
+                                        name="name"
+                                        type="text"
+                                        placeholder="যেমন: রহিম উদ্দিন"
+                                        autoComplete="name"
+                                        required
+                                        className="w-full rounded-lg border border-base-300 bg-transparent px-3 py-2.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15"
+                                   />
+                              </div>
+
+                              {/* Email */}
+                              <div>
+                                   <label
+                                        htmlFor="email"
+                                        className="mb-1.5 block text-sm font-medium"
+                                   >
+                                        ইমেইল
+                                   </label>
+
+                                   <input
+                                        id="email"
+                                        name="email"
+                                        type="email"
+                                        placeholder="you@example.com"
+                                        autoComplete="email"
+                                        required
+                                        className="w-full rounded-lg border border-base-300 bg-transparent px-3 py-2.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15"
+                                   />
+                              </div>
+
+                              {/* Password */}
+                              <div>
+                                   <label
+                                        htmlFor="password"
+                                        className="mb-1.5 block text-sm font-medium"
+                                   >
+                                        পাসওয়ার্ড
+                                   </label>
+
+                                   <input
+                                        id="password"
+                                        name="password"
+                                        type="password"
+                                        placeholder="কমপক্ষে ৮ অক্ষর"
+                                        autoComplete="new-password"
+                                        minLength={8}
+                                        required
+                                        className="w-full rounded-lg border border-base-300 bg-transparent px-3 py-2.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15"
+                                   />
+                              </div>
+
+                              {/* Confirm Password */}
+                              <div>
+                                   <label
+                                        htmlFor="confirmPassword"
+                                        className="mb-1.5 block text-sm font-medium"
+                                   >
+                                        পাসওয়ার্ড নিশ্চিত করুন
+                                   </label>
+
+                                   <input
+                                        id="confirmPassword"
+                                        name="confirmPassword"
+                                        type="password"
+                                        placeholder="আবার লিখুন"
+                                        autoComplete="new-password"
+                                        minLength={8}
+                                        required
+                                        className="w-full rounded-lg border border-base-300 bg-transparent px-3 py-2.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15"
+                                   />
+                              </div>
+
+                              {/* Submit Button */}
+                              <button
+                                   type="submit"
+                                   className="w-full cursor-pointer rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-base-100 shadow-sm transition hover:opacity-90 active:scale-[0.99]"
+                              >
+                                   অ্যাকাউন্ট তৈরি করুন
+                              </button>
+                         </form>
+
+                         {/* Divider */}
+                         <div className="my-5 flex items-center gap-3">
+                              <div className="h-px flex-1 bg-base-300" />
+                              <span className="text-xs text-base-content/60">অথবা</span>
+                              <div className="h-px flex-1 bg-base-300" />
+                         </div>
+
+                         {/* Social Login */}
+                         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                              <button
+                                   type="button"
+                                   className="flex items-center justify-center gap-2 rounded-lg border border-base-300 px-3 py-2.5 text-sm font-medium transition hover:bg-base-200"
+                              >
+                                   <FcGoogle size={18} />
+                                   Google দিয়ে চালিয়ে যান
+                              </button>
+
+                              <button
+                                   type="button"
+                                   className="flex items-center justify-center gap-2 rounded-lg border border-base-300 px-3 py-2.5 text-sm font-medium transition hover:bg-base-200"
+                              >
+                                   <FaGithub size={18} />
+                                   GitHub দিয়ে চালিয়ে যান
+                              </button>
+                         </div>
+
+                         {/* Login Link */}
+                         <p className="mt-5 text-center text-sm text-base-content/70">
+                              অ্যাকাউন্ট আছে?{' '}
+                              <Link
+                                   href="/signin"
+                                   className="font-semibold text-primary hover:underline"
+                              >
+                                   সাইন ইন করুন
+                              </Link>
+                         </p>
+                    </div>
+
+                    {/* Back Home */}
+                    <div className="mt-6 text-center">
+                         <Link
+                              href="/"
+                              className="text-sm text-base-content/60 transition hover:text-primary"
+                         >
+                              ← হোম পেজে ফিরে যান
+                         </Link>
+                    </div>
+               </div>
+          </main>
      );
 };
 
