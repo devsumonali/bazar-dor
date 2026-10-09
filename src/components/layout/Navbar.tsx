@@ -9,13 +9,16 @@ const Navbar = () => {
           <header className=" lg:px-0 lg:py-2.5 p-5 bg-white">
                <div className="container-width flex justify-between gap-5">
                     <div className="flex gap-3">
-                         <Link href={'/'}>
+                         <Link
+                              href="/"
+                              className="flex size-14 items-center justify-center rounded-xl bg-primary p-3"
+                         >
                               <Image
-                                   src={'/images/logo-icon.png'}
-                                   alt="log"
-                                   width={60}
+                                   src="/images/logo-icon.png"
+                                   alt="বাজার দর"
+                                   width={40}
                                    height={40}
-                                   className="bg-primary p-2.5 rounded-xl"
+                                   className="h-auto w-full object-contain"
                               />
                          </Link>
                          <div className="space-y-1">
