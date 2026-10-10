@@ -1,6 +1,9 @@
 import Breadcrumb from '@/components/products/Breadcam';
+import { auth } from '@/libs/auth';
 import { getSingleProduct } from '@/libs/products';
 import { getUnitBn } from '@/utils/getUnitBn';
+import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 interface ProductPageProps {
      params: Promise<{ id: string }>;
@@ -9,6 +12,14 @@ interface ProductPageProps {
 const SingleProductPage = async ({ params }: ProductPageProps) => {
      const { id } = await params;
      const product = await getSingleProduct(id);
+
+     const session = await auth.api.getSession({
+          headers: await headers(),
+     });
+
+     if (!session) {
+          redirect(`/signin?callbackUrl=/products/${id}`);
+     }
 
      const mins = product.markets.map((market) => market.min);
      const maxs = product.markets.map((market) => market.max);

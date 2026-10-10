@@ -7,6 +7,17 @@ const db = client.db('bazar_dor');
 
 export const auth = betterAuth({
      emailAndPassword: { enabled: true },
+     socialProviders: {
+          google: {
+               clientId: process.env.GOOGLE_CLIENT_ID as string,
+               clientSecret: process.env.GOOGLE_CLIENT_SCREET as string,
+          },
+          github: {
+               clientId: process.env.GITHUB_CLIENT_ID as string,
+               clientSecret: process.env.GITHUB_CLIENT_SCREET as string,
+          },
+     },
+
      database: mongodbAdapter(db, {
           client,
      }),

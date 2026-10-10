@@ -3,26 +3,13 @@
 import { authClient } from '@/libs/auth-client';
 import Link from 'next/link';
 import { useState } from 'react';
-import toast from 'react-hot-toast';
 import { FaChevronDown, FaRegUser } from 'react-icons/fa6';
-import { FiLogOut } from 'react-icons/fi';
+import SignOutButton from '../shared/SignOutBtn';
 
 const UserInfo = () => {
      const { data: session } = authClient.useSession();
      const [isOpen, setIsOpen] = useState(false);
      const user = session?.user;
-
-     const handleSignOut = async () => {
-          const { error } = await authClient.signOut();
-
-          if (error) {
-               toast.error(error.message || 'সাইন আউট করতে সমস্যা হয়েছে!');
-               return;
-          }
-
-          toast.success('সফলভাবে সাইন আউট হয়েছে!');
-          setIsOpen(false);
-     };
 
      return (
           <div>
@@ -54,6 +41,7 @@ const UserInfo = () => {
 
                                    <div className="mt-5 space-y-4">
                                         <Link
+                                             onClick={() => setIsOpen(false)}
                                              href="/profile"
                                              className="flex items-center gap-2 text-sm text-base-content"
                                         >
@@ -61,30 +49,25 @@ const UserInfo = () => {
                                              আমার প্রোফাইল
                                         </Link>
 
-                                        <button
-                                             onClick={handleSignOut}
-                                             type="button"
-                                             className="flex items-center gap-2 cursor-pointer text-sm text-error"
-                                        >
-                                             <FiLogOut />
-                                             সাইন আউট
-                                        </button>
+                                        <SignOutButton />
                                    </div>
                               </div>
                          )}
                     </div>
                ) : (
                     <div className="flex gap-3 items-center">
-                         <Link href={'/signin/'}>
-                              <button className="text-base-content cursor-pointer font-medium text-sm">
-                                   সাইন ইন
-                              </button>
+                         <Link
+                              href={'/signin/'}
+                              className="text-base-content cursor-pointer font-medium text-sm"
+                         >
+                              সাইন ইন
                          </Link>
 
-                         <Link href={'/signup/'}>
-                              <button className="text-base-100 cursor-pointer font-medium text-sm bg-primary rounded-xl p-3">
-                                   সাইন আপ
-                              </button>
+                         <Link
+                              href={'/signup/'}
+                              className="text-base-100 cursor-pointer font-medium text-sm bg-primary rounded-xl p-3"
+                         >
+                              সাইন আপ
                          </Link>
                     </div>
                )}

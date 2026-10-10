@@ -1,11 +1,15 @@
 'use client';
 import { authClient } from '@/libs/auth-client';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { FaGithub } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 
 const SignInPage = () => {
+     const searchParams = useSearchParams();
+     const callbackUrl = searchParams.get('callbackUrl') || '/';
+
      const onSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
           e.preventDefault();
 
@@ -18,7 +22,7 @@ const SignInPage = () => {
 
           const { data, error } = await authClient.signIn.email({
                ...user,
-               callbackURL: '/',
+               callbackURL: callbackUrl,
           });
 
           if (error) {
@@ -28,6 +32,33 @@ const SignInPage = () => {
 
           if (data) {
                toast.success('সফলভাবে সাইন ইন হয়েছে!');
+          }
+     };
+
+     const handleGoogleSignIn = async () => {
+          const { data, error } = await authClient.signIn.social({
+               provider: 'google',
+          });
+
+          if (error) {
+               toast.error(error.message || 'সাইন ইন করতে সমস্যা হয়েছে!');
+               return;
+          }
+
+          if (data) {
+               toast.success('সফলভাবে সাইন ইন হয়েছে!');
+          }
+     };
+
+     const handleGithubSignIn = async () => {
+          const { error } = await authClient.signIn.social({
+               provider: 'github',
+               callbackURL: callbackUrl,
+          });
+
+          if (error) {
+               toast.error(error.message || 'সাইন ইন করতে সমস্যা হয়েছে!');
+               return;
           }
      };
      return (
@@ -104,16 +135,18 @@ const SignInPage = () => {
                          {/* Social Login */}
                          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                               <button
+                                   onClick={handleGoogleSignIn}
                                    type="button"
-                                   className="flex items-center justify-center gap-2 rounded-lg border border-base-300 px-3 py-2.5 text-sm font-medium transition hover:bg-base-200"
+                                   className="flex items-center cursor-pointer justify-center gap-2 rounded-lg border border-base-300 px-3 py-2.5 text-sm font-medium transition hover:bg-base-200"
                               >
                                    <FcGoogle size={18} />
                                    Google দিয়ে চালিয়ে যান
                               </button>
 
                               <button
+                                   onClick={handleGithubSignIn}
                                    type="button"
-                                   className="flex items-center justify-center gap-2 rounded-lg border border-base-300 px-3 py-2.5 text-sm font-medium transition hover:bg-base-200"
+                                   className="flex items-center justify-center cursor-pointer gap-2 rounded-lg border border-base-300 px-3 py-2.5 text-sm font-medium transition hover:bg-base-200"
                               >
                                    <FaGithub size={18} />
                                    GitHub দিয়ে চালিয়ে যান
