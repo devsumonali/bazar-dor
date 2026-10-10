@@ -1,9 +1,11 @@
 import Breadcrumb from '@/components/products/Breadcam';
+import SocialLoginToast from '@/components/shared/SocialLoginToast';
 import { auth } from '@/libs/auth';
 import { getSingleProduct } from '@/libs/products';
 import { getUnitBn } from '@/utils/getUnitBn';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { Suspense } from 'react';
 import { LuDot } from 'react-icons/lu';
 
 interface ProductPageProps {
@@ -41,6 +43,9 @@ const SingleProductPage = async ({ params }: ProductPageProps) => {
      return (
           <section className="my-8 px-4 lg:my-12 lg:px-0">
                <div className="container-width">
+                    <Suspense fallback={null}>
+                         <SocialLoginToast />
+                    </Suspense>
                     <Breadcrumb productName={product.nameBn} />
 
                     <div className="flex flex-col gap-5 rounded-2xl border border-base-300 bg-base-100 p-5 sm:flex-row sm:items-center sm:justify-between">

@@ -7,9 +7,13 @@ import { FaChevronDown, FaRegUser } from 'react-icons/fa6';
 import SignOutButton from '../shared/SignOutBtn';
 
 const UserInfo = () => {
-     const { data: session } = authClient.useSession();
+     const { data: session, isPending } = authClient.useSession();
      const [isOpen, setIsOpen] = useState(false);
      const user = session?.user;
+
+     if (isPending) {
+          return <div className="h-12 w-36 animate-pulse rounded-xl bg-base-300" />;
+     }
 
      return (
           <div>

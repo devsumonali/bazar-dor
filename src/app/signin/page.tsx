@@ -12,6 +12,8 @@ const SignInPage = () => {
      const callbackUrl = searchParams.get('callbackUrl') || '/';
      const reason = searchParams.get('reason');
      const [isLoading, setIsLoading] = useState(false);
+     const [socialLoading, setSocialLoading] = useState<'google' | 'github' | null>(null);
+     const oauthError = searchParams.get('oauthError');
 
      useEffect(() => {
           if (reason === 'login-required') {
@@ -19,7 +21,13 @@ const SignInPage = () => {
                     id: 'login-required',
                });
           }
-     }, [reason]);
+
+          if (oauthError === 'true') {
+               toast.error('Social Login ব্যর্থ হয়েছে! আবার চেষ্টা করুন।', {
+                    id: 'oauth-error',
+               });
+          }
+     }, [reason, oauthError]);
 
      const onSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
           e.preventDefault();
@@ -53,26 +61,42 @@ const SignInPage = () => {
      };
 
      const handleGoogleSignIn = async () => {
-          const { error } = await authClient.signIn.social({
-               provider: 'google',
-               callbackURL: callbackUrl,
-          });
+          setSocialLoading('google');
 
-          if (error) {
-               toast.error(error.message || 'সাইন ইন করতে সমস্যা হয়েছে!');
-               return;
+          try {
+               const { error } = await authClient.signIn.social({
+                    provider: 'google',
+                    callbackURL: `${callbackUrl}${callbackUrl.includes('?') ? '&' : '?'}socialLogin=success`,
+                    errorCallbackURL: '/signin?oauthError=true',
+               });
+
+               if (error) {
+                    toast.error(error.message || 'Google সাইন ইন করতে সমস্যা হয়েছে!');
+               }
+          } catch {
+               toast.error('Google সাইন ইন করতে সমস্যা হয়েছে!');
+          } finally {
+               setSocialLoading(null);
           }
      };
 
      const handleGithubSignIn = async () => {
-          const { error } = await authClient.signIn.social({
-               provider: 'github',
-               callbackURL: callbackUrl,
-          });
+          setSocialLoading('github');
 
-          if (error) {
-               toast.error(error.message || 'সাইন ইন করতে সমস্যা হয়েছে!');
-               return;
+          try {
+               const { error } = await authClient.signIn.social({
+                    provider: 'github',
+                    callbackURL: `${callbackUrl}${callbackUrl.includes('?') ? '&' : '?'}socialLogin=success`,
+                    errorCallbackURL: '/signin?oauthError=true',
+               });
+
+               if (error) {
+                    toast.error(error.message || 'GitHub সাইন ইন করতে সমস্যা হয়েছে!');
+               }
+          } catch {
+               toast.error('GitHub সাইন ইন করতে সমস্যা হয়েছে!');
+          } finally {
+               setSocialLoading(null);
           }
      };
 
@@ -151,19 +175,25 @@ const SignInPage = () => {
                               <button
                                    onClick={handleGoogleSignIn}
                                    type="button"
+                                   disabled={socialLoading !== null}
                                    className="flex items-center cursor-pointer justify-center gap-2 rounded-lg border border-base-300 px-3 py-2.5 text-sm font-medium transition hover:bg-base-200"
                               >
                                    <FcGoogle size={18} />
-                                   Google দিয়ে চালিয়ে যান
+                                   {socialLoading === 'google'
+                                        ? 'অপেক্ষা করুন...'
+                                        : 'Google দিয়ে চালিয়ে যান'}
                               </button>
 
                               <button
                                    onClick={handleGithubSignIn}
                                    type="button"
+                                   disabled={socialLoading !== null}
                                    className="flex items-center justify-center cursor-pointer gap-2 rounded-lg border border-base-300 px-3 py-2.5 text-sm font-medium transition hover:bg-base-200"
                               >
                                    <FaGithub size={18} />
-                                   GitHub দিয়ে চালিয়ে যান
+                                   {socialLoading === 'github'
+                                        ? 'অপেক্ষা করুন...'
+                                        : 'GitHub দিয়ে চালিয়ে যান'}
                               </button>
                          </div>
                          {/* Register Link */}
