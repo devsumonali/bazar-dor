@@ -36,17 +36,13 @@ const SignInPage = () => {
      };
 
      const handleGoogleSignIn = async () => {
-          const { data, error } = await authClient.signIn.social({
+          const { error } = await authClient.signIn.social({
                provider: 'google',
           });
 
           if (error) {
                toast.error(error.message || 'সাইন ইন করতে সমস্যা হয়েছে!');
                return;
-          }
-
-          if (data) {
-               toast.success('সফলভাবে সাইন ইন হয়েছে!');
           }
      };
 
