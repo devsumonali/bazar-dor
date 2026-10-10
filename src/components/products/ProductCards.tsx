@@ -13,7 +13,7 @@ const ProductCards = ({ product }: ProductCardsProps) => {
      const isDown = product.change.dir === 'down';
 
      return (
-          <Link href={`/products/${product.id}`}>
+          <Link href={`/product/${product.id}`}>
                <div className="rounded-2xl border border-base-300 bg-white p-5 hover:border hover:border-primary">
                     <div className="flex items-center gap-4">
                          <div className="flex size-14 items-center justify-center rounded-xl bg-base-200 text-4xl">
@@ -45,9 +45,9 @@ const ProductCards = ({ product }: ProductCardsProps) => {
                               <span
                                    className={`rounded-full inline-flex gap-2 items-center px-3 py-1 text-sm font-semibold ${
                                         isUp
-                                             ? 'bg-error/5 text-error'
+                                             ? 'bg-error/5  text-success'
                                              : isDown
-                                               ? 'bg-success/5 text-success'
+                                               ? 'bg-success/5 text-error'
                                                : 'bg-base-200 text-base-content/60'
                                    }`}
                               >

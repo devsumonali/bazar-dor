@@ -4,6 +4,7 @@ import { getSingleProduct } from '@/libs/products';
 import { getUnitBn } from '@/utils/getUnitBn';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { LuDot } from 'react-icons/lu';
 
 interface ProductPageProps {
      params: Promise<{ id: string }>;
@@ -19,7 +20,7 @@ const SingleProductPage = async ({ params }: ProductPageProps) => {
 
      if (!session) {
           //   redirect(`/signin?callbackUrl=/products/${id}`);
-          redirect(`/signin?callbackUrl=/products/${id}&reason=login-required`);
+          redirect(`/signin?callbackUrl=/product/${id}&reason=login-required`);
      }
 
      const mins = product.markets.map((market) => market.min);
@@ -53,8 +54,10 @@ const SingleProductPage = async ({ params }: ProductPageProps) => {
                                         {product.nameBn}
                                    </h1>
 
-                                   <p className="mt-1 text-sm text-base-content/60">
+                                   <p className="mt-1 inline-flex items-center text-sm text-base-content/60">
                                         প্রতি {getUnitBn(product.unit)}
+                                        <LuDot />
+                                        <span>{product.categoryNameBn}</span>
                                    </p>
 
                                    <p className="mt-2 text-sm text-base-content/70">
@@ -81,9 +84,9 @@ const SingleProductPage = async ({ params }: ProductPageProps) => {
                               <p
                                    className={`mt-1 text-sm font-semibold ${
                                         isUp
-                                             ? 'text-error'
+                                             ? 'text-success'
                                              : isDown
-                                               ? 'text-success'
+                                               ? ' text-error'
                                                : 'text-base-content/50'
                                    }`}
                               >

@@ -2,12 +2,15 @@
 import { authClient } from '@/libs/auth-client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { FaGithub } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 
 const SignUpPage = () => {
      const router = useRouter();
+     const [isLoading, setIsLoading] = useState(false);
+
      const onSubmitHandle = async (event: React.SubmitEvent<HTMLFormElement>) => {
           event.preventDefault();
 
@@ -24,21 +27,28 @@ const SignUpPage = () => {
                return;
           }
 
-          // BetterAuth signup
-          const { data, error } = await authClient.signUp.email({
-               name,
-               email,
-               password,
-          });
+          setIsLoading(true);
 
-          if (error) {
-               toast.error(error.message || 'অ্যাকাউন্ট তৈরি করতে সমস্যা হয়েছে!');
-               return;
-          }
+          try {
+               const { data, error } = await authClient.signUp.email({
+                    name,
+                    email,
+                    password,
+               });
 
-          if (data) {
-               toast.success('অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে!');
-               router.push('/signin');
+               if (error) {
+                    toast.error(error.message || 'অ্যাকাউন্ট তৈরি করতে সমস্যা হয়েছে!');
+                    return;
+               }
+
+               if (data) {
+                    toast.success('অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে!');
+                    router.push('/signin');
+               }
+          } catch {
+               toast.error('কিছু সমস্যা হয়েছে, আবার চেষ্টা করুন!');
+          } finally {
+               setIsLoading(false);
           }
      };
 
@@ -167,9 +177,10 @@ const SignUpPage = () => {
                               {/* Submit Button */}
                               <button
                                    type="submit"
+                                   disabled={isLoading}
                                    className="w-full cursor-pointer rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-base-100 shadow-sm transition hover:opacity-90 active:scale-[0.99]"
                               >
-                                   অ্যাকাউন্ট তৈরি করুন
+                                   {isLoading ? 'অ্যাকাউন্ট তৈরি হচ্ছে...' : 'অ্যাকাউন্ট তৈরি করুন'}
                               </button>
                          </form>
 

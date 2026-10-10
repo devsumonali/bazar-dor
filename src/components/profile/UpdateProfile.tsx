@@ -2,10 +2,12 @@
 
 import { authClient } from '@/libs/auth-client';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
 
 const UpdateProfileForm = ({ name }: { name: string }) => {
      const router = useRouter();
+     const [isLoading, setIsLoading] = useState(false);
 
      const handleUpdate = async (event: React.SubmitEvent<HTMLFormElement>) => {
           event.preventDefault();
@@ -18,17 +20,25 @@ const UpdateProfileForm = ({ name }: { name: string }) => {
                return;
           }
 
-          const { error } = await authClient.updateUser({
-               name: newName,
-          });
+          setIsLoading(true);
 
-          if (error) {
-               toast.error(error.message || 'নাম আপডেট করতে সমস্যা হয়েছে!');
-               return;
+          try {
+               const { error } = await authClient.updateUser({
+                    name: newName,
+               });
+
+               if (error) {
+                    toast.error(error.message || 'নাম আপডেট করতে সমস্যা হয়েছে!');
+                    return;
+               }
+
+               toast.success('নাম সফলভাবে আপডেট হয়েছে!');
+               router.refresh();
+          } catch {
+               toast.error('কিছু সমস্যা হয়েছে, আবার চেষ্টা করুন!');
+          } finally {
+               setIsLoading(false);
           }
-
-          toast.success('নাম সফলভাবে আপডেট হয়েছে!');
-          router.refresh();
      };
 
      return (
@@ -53,9 +63,10 @@ const UpdateProfileForm = ({ name }: { name: string }) => {
 
                <button
                     type="submit"
+                    disabled={isLoading}
                     className="w-full cursor-pointer rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-base-100"
                >
-                    আপডেট
+                    {isLoading ? 'আপডেট হচ্ছে...' : 'আপডেট'}
                </button>
           </form>
      );

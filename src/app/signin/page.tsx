@@ -2,7 +2,7 @@
 import { authClient } from '@/libs/auth-client';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { FaGithub } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
@@ -11,6 +11,7 @@ const SignInPage = () => {
      const searchParams = useSearchParams();
      const callbackUrl = searchParams.get('callbackUrl') || '/';
      const reason = searchParams.get('reason');
+     const [isLoading, setIsLoading] = useState(false);
 
      useEffect(() => {
           if (reason === 'login-required') {
@@ -30,18 +31,24 @@ const SignInPage = () => {
                password: string;
           };
 
-          const { data, error } = await authClient.signIn.email({
-               ...user,
-               callbackURL: callbackUrl,
-          });
+          setIsLoading(true);
 
-          if (error) {
-               toast.error(error.message || 'সাইন ইন করতে সমস্যা হয়েছে!');
-               return;
-          }
+          try {
+               const { data, error } = await authClient.signIn.email({
+                    ...user,
+                    callbackURL: callbackUrl,
+               });
 
-          if (data) {
-               toast.success('সফলভাবে সাইন ইন হয়েছে!');
+               if (error) {
+                    toast.error(error.message || 'সাইন ইন করতে সমস্যা হয়েছে!');
+                    return;
+               }
+
+               if (data) {
+                    toast.success('সফলভাবে সাইন ইন হয়েছে!');
+               }
+          } finally {
+               setIsLoading(false);
           }
      };
 
@@ -127,19 +134,18 @@ const SignInPage = () => {
                               {/* Submit */}
                               <button
                                    type="submit"
+                                   disabled={isLoading}
                                    className="w-full cursor-pointer rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-base-100 shadow-sm transition hover:opacity-90 active:scale-[0.99]"
                               >
-                                   সাইন ইন
+                                   {isLoading ? 'সাইন ইন হচ্ছে...' : 'সাইন ইন'}
                               </button>
                          </form>
-
                          {/* Divider */}
                          <div className="my-5 flex items-center gap-3">
                               <div className="h-px flex-1 bg-base-300" />
                               <span className="text-xs text-base-content/60">অথবা</span>
                               <div className="h-px flex-1 bg-base-300" />
                          </div>
-
                          {/* Social Login */}
                          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                               <button
@@ -160,7 +166,6 @@ const SignInPage = () => {
                                    GitHub দিয়ে চালিয়ে যান
                               </button>
                          </div>
-
                          {/* Register Link */}
                          <p className="mt-5 text-center text-sm text-base-content/70">
                               অ্যাকাউন্ট নেই?{' '}
