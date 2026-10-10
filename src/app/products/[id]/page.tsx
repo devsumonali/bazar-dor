@@ -18,7 +18,8 @@ const SingleProductPage = async ({ params }: ProductPageProps) => {
      });
 
      if (!session) {
-          redirect(`/signin?callbackUrl=/products/${id}`);
+          //   redirect(`/signin?callbackUrl=/products/${id}`);
+          redirect(`/signin?callbackUrl=/products/${id}&reason=login-required`);
      }
 
      const mins = product.markets.map((market) => market.min);

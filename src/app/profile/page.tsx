@@ -1,7 +1,7 @@
-import UpdateProfileForm from '@/components/profile/UpdateProfile';
 import SignOutButton from '@/components/shared/SignOutBtn';
 import { auth } from '@/libs/auth';
 import { headers } from 'next/headers';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { FaRegUser } from 'react-icons/fa6';
 
@@ -47,7 +47,12 @@ const ProfilePage = async () => {
                     <div className="mt-5 rounded-2xl border border-base-300 bg-base-100 p-6 sm:p-8">
                          <h2 className="mb-8 text-lg font-semibold text-base-content">তথ্য</h2>
 
-                         <UpdateProfileForm name={user.name} />
+                         <Link
+                              href="/profile/update"
+                              className="block w-full rounded-lg bg-primary px-4 py-3 text-center text-sm font-semibold text-base-100 hover:opacity-90"
+                         >
+                              তথ্য আপডেট করুন
+                         </Link>
                     </div>
                </div>
           </main>

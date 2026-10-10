@@ -2,6 +2,7 @@
 import { authClient } from '@/libs/auth-client';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { FaGithub } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
@@ -9,6 +10,15 @@ import { FcGoogle } from 'react-icons/fc';
 const SignInPage = () => {
      const searchParams = useSearchParams();
      const callbackUrl = searchParams.get('callbackUrl') || '/';
+     const reason = searchParams.get('reason');
+
+     useEffect(() => {
+          if (reason === 'login-required') {
+               toast.error('পণ্যের বিস্তারিত দেখতে আগে সাইন ইন করুন!', {
+                    id: 'login-required',
+               });
+          }
+     }, [reason]);
 
      const onSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
           e.preventDefault();
@@ -38,6 +48,7 @@ const SignInPage = () => {
      const handleGoogleSignIn = async () => {
           const { error } = await authClient.signIn.social({
                provider: 'google',
+               callbackURL: callbackUrl,
           });
 
           if (error) {
@@ -57,6 +68,7 @@ const SignInPage = () => {
                return;
           }
      };
+
      return (
           <main className="min-h-screen bg-base-200 px-4 py-10 sm:py-14">
                <div className="mx-auto w-full max-w-md">
