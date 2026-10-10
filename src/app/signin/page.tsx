@@ -1,8 +1,35 @@
+'use client';
+import { authClient } from '@/libs/auth-client';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 import { FaGithub } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 
 const SignInPage = () => {
+     const onSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+          e.preventDefault();
+
+          const formData = new FormData(e.currentTarget);
+
+          const user = Object.fromEntries(formData.entries()) as {
+               email: string;
+               password: string;
+          };
+
+          const { data, error } = await authClient.signIn.email({
+               ...user,
+               callbackURL: '/',
+          });
+
+          if (error) {
+               toast.error(error.message || 'সাইন ইন করতে সমস্যা হয়েছে!');
+               return;
+          }
+
+          if (data) {
+               toast.success('সফলভাবে সাইন ইন হয়েছে!');
+          }
+     };
      return (
           <main className="min-h-screen bg-base-200 px-4 py-10 sm:py-14">
                <div className="mx-auto w-full max-w-md">
@@ -17,7 +44,7 @@ const SignInPage = () => {
 
                     {/* Login Card */}
                     <div className="rounded-2xl border border-base-300 bg-base-100 p-5 shadow-sm sm:p-7">
-                         <form className="space-y-4">
+                         <form onSubmit={onSubmit} className="space-y-4">
                               {/* Email */}
                               <div>
                                    <label
@@ -61,7 +88,7 @@ const SignInPage = () => {
                               {/* Submit */}
                               <button
                                    type="submit"
-                                   className="w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-base-100 shadow-sm transition hover:opacity-90 active:scale-[0.99]"
+                                   className="w-full cursor-pointer rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-base-100 shadow-sm transition hover:opacity-90 active:scale-[0.99]"
                               >
                                    সাইন ইন
                               </button>

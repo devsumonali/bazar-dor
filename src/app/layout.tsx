@@ -2,6 +2,7 @@ import Footer from '@/components/layout/Footer';
 import Navbar from '@/components/layout/Navbar';
 import type { Metadata } from 'next';
 import { Hind_Siliguri } from 'next/font/google';
+import { Toaster } from 'react-hot-toast';
 import './globals.css';
 
 const hindSiliguri = Hind_Siliguri({
@@ -17,9 +18,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<'/'>) {
      return (
           <html lang="en" className={`${hindSiliguri.className} h-full antialiased`}>
-               <body className="min-h-full flex flex-col bg-[#f0f5f0]">
+               <body suppressHydrationWarning className="min-h-full flex flex-col bg-[#f0f5f0]">
                     <Navbar />
                     {children}
+                    <Toaster position="top-center" />
                     <Footer />
                </body>
           </html>

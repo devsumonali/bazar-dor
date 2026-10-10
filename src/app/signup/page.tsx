@@ -1,29 +1,44 @@
 'use client';
 import { authClient } from '@/libs/auth-client';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 import { FaGithub } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 
 const SignUpPage = () => {
-     const onSubmitHandle = async (event: React.SubmitEvent<HTMLElement>) => {
+     const router = useRouter();
+     const onSubmitHandle = async (event: React.SubmitEvent<HTMLFormElement>) => {
           event.preventDefault();
 
-          const formData = new FormData(event.target);
-          const user = Object.fromEntries(formData) as {
-               name: string;
-               email: string;
-               password: string;
-          };
+          const formData = new FormData(event.currentTarget);
 
-          const { data, error } = await authClient.signUp.email({ ...user, callbackURL: '/' });
+          const name = formData.get('name') as string;
+          const email = formData.get('email') as string;
+          const password = formData.get('password') as string;
+          const confirmPassword = formData.get('confirmPassword') as string;
+
+          // Password matching
+          if (password !== confirmPassword) {
+               toast.error('পাসওয়ার্ড দুটি মিলছে না!');
+               return;
+          }
+
+          // BetterAuth signup
+          const { data, error } = await authClient.signUp.email({
+               name,
+               email,
+               password,
+          });
+
+          if (error) {
+               toast.error(error.message || 'অ্যাকাউন্ট তৈরি করতে সমস্যা হয়েছে!');
+               return;
+          }
 
           if (data) {
-               console.log(data);
-               redirect('/');
-          }
-          if (error) {
-               console.log(error);
+               toast.success('অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে!');
+               router.push('/signin');
           }
      };
      return (
