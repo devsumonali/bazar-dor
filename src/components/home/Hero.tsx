@@ -25,7 +25,7 @@ const Hero = () => {
                          </Link>
                     </div>
 
-                    <div className="flex w-full items-end justify-end lg:w-2/5">
+                    <div className="flex w-full items-center lg:items-end justify-center lg:justify-end lg:w-2/5">
                          <Image
                               src="/images/bazar-hero.png"
                               alt="hero image"
