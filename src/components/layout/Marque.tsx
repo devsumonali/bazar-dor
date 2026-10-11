@@ -49,9 +49,9 @@ const Marque = async () => {
                                    <span
                                         className={
                                              isUp
-                                                  ? 'inline-flex items-center gap-1 text-error'
+                                                  ? 'inline-flex items-center gap-1  text-success'
                                                   : isDown
-                                                    ? 'inline-flex items-center gap-1 text-success'
+                                                    ? 'inline-flex text-error items-center gap-1 '
                                                     : 'inline-flex items-center gap-1 text-base-content/60'
                                         }
                                    >

@@ -12,7 +12,7 @@ const CategoriesMenu = ({ categories }: CategoriesMenuProps) => {
      const pathname = usePathname();
 
      return (
-          <div className="container-width flex items-center gap-2 overflow-x-auto py-2">
+          <div className="container-width flex max-w-full items-center gap-2 overflow-x-auto py-2">
                {categories.map((category) => {
                     const href = `/category/${category.slug}`;
                     const isActive = pathname === href;

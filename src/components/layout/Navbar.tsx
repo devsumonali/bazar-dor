@@ -7,12 +7,12 @@ import UserInfo from './UserInfo';
 
 const Navbar = () => {
      return (
-          <header className=" lg:px-0 lg:py-2.5 p-5 bg-white">
-               <div className="container-width flex flex-col lg:flex-row justify-between gap-5">
-                    <div className="flex gap-3">
+          <header className="bg-white">
+               <div className="container-width flex flex-col gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between lg:px-0 lg:py-2.5">
+                    <div className="flex items-center gap-3">
                          <Link
                               href="/"
-                              className="flex size-14 items-center justify-center rounded-xl bg-primary p-3"
+                              className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-primary p-3 sm:size-14"
                          >
                               <Image
                                    src="/images/logo-icon.png"
@@ -22,16 +22,22 @@ const Navbar = () => {
                                    className="h-auto w-full object-contain"
                               />
                          </Link>
+
                          <div className="space-y-1">
-                              <h3 className="font-bold text-[20px] text-base-content">বাজার দর</h3>
-                              <p>
-                                   <CurrentDate className="text-[16px] text-base-content" />
-                              </p>
+                              <h3 className="text-lg font-bold text-base-content sm:text-xl">
+                                   বাজার দর
+                              </h3>
+
+                              <CurrentDate className="text-sm text-base-content sm:text-base" />
                          </div>
                     </div>
-                    <UserInfo />
+
+                    <div className="flex items-center sm:justify-end">
+                         <UserInfo />
+                    </div>
                </div>
-               <div className="border-y border-base-300 py-3 mt-2.5">
+
+               <div className="mt-2 border-y border-base-300 py-3">
                     <CategoriesNav />
                </div>
 
